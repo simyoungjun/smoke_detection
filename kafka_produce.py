@@ -2,7 +2,7 @@ import cv2
 from kafka import KafkaProducer
 import time
 
-def publish_camera_stream(server_ip, server_port, topic_name):
+def produce_camera_stream(server_ip, server_port, topic_name):
     producer=KafkaProducer(bootstrap_servers=f"{server_ip}:{server_port}")
 
     cap=cv2.VideoCapture(0)
@@ -27,6 +27,6 @@ def publish_camera_stream(server_ip, server_port, topic_name):
     producer.close()
 
 if __name__=="__main__":
-    publish_camera_stream("piai_kafka.aiot.town", "9092", "TF-CAM-DOOR1")
+    produce_camera_stream("piai_kafka.aiot.town", "9092", "TF-CAM-DOOR1")
 
 
