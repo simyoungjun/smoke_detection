@@ -1,24 +1,24 @@
 import cv2
-from kafka import KafkaProducer, KafkaAdminClient, TopicPartition
+from kafka import KafkaProducer, KafkaConsumer, TopicPartition
 import time
 
-def get_last_offset(admin_client, topic_name):
-    metadata = admin_client.describe_topics([topic_name])
-    partitions = metadata[0].partitions
+def get_last_offset(server_ip, server_port, topic_name):
+    consumer = KafkaConsumer(bootstrap_servers=f"{server_ip}:{server_port}")
+    partitions = consumer.partitions_for_topic(topic_name)
+    
     last_offset = 0
-
-    for partition in partitions:
-        partition_id = partition.partition
-        topic_partition = TopicPartition(topic_name, partition_id)
-        offset_info = admin_client.list_offsets({topic_partition: -1})
-        partition_offset = offset_info[topic_partition].offset
-        last_offset = max(last_offset, partition_offset)
-
+    if partitions is not None:
+        for partition in partitions:
+            tp = TopicPartition(topic_name, partition)
+            consumer.assign([tp])
+            consumer.seek_to_end(tp)
+            offset = consumer.position(tp)
+            last_offset = max(last_offset, offset)
+    consumer.close()
     return last_offset
 
 def produce_camera_stream(server_ip, server_port, topic_name):
     producer = KafkaProducer(bootstrap_servers=f"{server_ip}:{server_port}")
-    admin_client = KafkaAdminClient(bootstrap_servers=f"{server_ip}:{server_port}")
 
     cap = cv2.VideoCapture(0)
 
@@ -40,7 +40,7 @@ def produce_camera_stream(server_ip, server_port, topic_name):
         frame_bytes = buffer.tobytes()
 
         # Get the last offset
-        last_offset = get_last_offset(admin_client, topic_name)
+        last_offset = get_last_offset(server_ip, server_port, topic_name)
         message_key = str(last_offset).encode('utf-8')
 
         producer.send(topic_name, key=message_key, value=frame_bytes)
@@ -49,7 +49,6 @@ def produce_camera_stream(server_ip, server_port, topic_name):
 
     cap.release()
     producer.close()
-    admin_client.close()
 
 if __name__ == "__main__":
     produce_camera_stream("piai_kafka.aiot.town", "9092", "TF-CAM-DOOR1")
