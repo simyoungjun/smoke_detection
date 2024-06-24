@@ -31,7 +31,7 @@ def consume_camera_stream(server_ip, server_port, topic_name, group_id):
 
     cv2.destroyAllWindows()
 
-def store_kafka_stream_as_video(server_ip, server_port, topic_name, group_id, o_width, o_height, fps=60, video_len=60, save_dir=".", save_name="test_video", width=None, height=None, p_num_offset_dict=None):
+def store_kafka_stream_as_video(server_ip, server_port, topic_name, group_id, o_width, o_height, timing="current", fps=60, video_len=60, save_dir=".", save_name="test_video", width=None, height=None, p_num_offset_dict=None):
     def make_img_from_msg(msg_value):
         np_arr = np.frombuffer(msg_value, dtype=np.uint8)
         img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
@@ -59,6 +59,14 @@ def store_kafka_stream_as_video(server_ip, server_port, topic_name, group_id, o_
         consumer.poll(0)
         time.sleep(1)
 
+    if timing == "latest":
+        for tp in topic_partitions:
+            print(f"latest: {consumer.end_offsets([tp])[tp]}")
+            consumer.seek(tp, consumer.end_offsets([tp])[tp])
+    elif timing == "earliest":
+        for tp in topic_partitions:
+            consumer.seek(tp, consumer.beginning_offsets([tp]))
+    
     if p_num_offset_dict != None:
         for idx, offset in p_num_offset_dict.items():
                 consumer.seek(topic_partitions[idx], offset)
@@ -67,6 +75,7 @@ def store_kafka_stream_as_video(server_ip, server_port, topic_name, group_id, o_
     print("Current Offsets:", current_offsets)
 
     while len(frame_list) < fps * video_len:
+        print(f"current frame_list length: {len(frame_list)}")
         try:
             frame_list.append(make_img_from_msg(next(consumer).value))
         except StopIteration:
@@ -84,7 +93,7 @@ def store_kafka_stream_as_video(server_ip, server_port, topic_name, group_id, o_
             consumer.seek(tp, offset)
             return None
     
-    video_path = f"{save_dir}/{save_name}.mp4"
+    video_path = f"{save_dir}/{save_name}"
     
     if width != None and height != None:
         process = (
@@ -116,4 +125,4 @@ def store_kafka_stream_as_video(server_ip, server_port, topic_name, group_id, o_
 
 if __name__=="__main__":
     # consume_camera_stream("piai_kafka.aiot.town", "9092", "TF-CAM-DOOR2", "webcam-group2")
-    store_kafka_stream_as_video("piai_kafka.aiot.town", "9092", "TF-CAM-DOOR2", "webcam-group2", 640, 480, 120, 60, ".", "second_test", 1280, 1080)
+    store_kafka_stream_as_video("piai_kafka.aiot.town", "9092", "TF-CAM-DOOR2", "webcam-group2", 640, 480, "latest", 60, 120, ".", "second_test.mp4", 1280, 1080)
