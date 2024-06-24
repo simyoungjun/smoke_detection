@@ -1,7 +1,9 @@
 #!/bin/bash
 
-_EXEC_PATH="kafka_produce.py"
+echo "test success" >> /home/wsms8646/rpi4_kafka_test/result.txt
 
+_EXEC_PATH="kafka_produce.py"
+_EXEC_DIR="/home/wsms8646/rpi4_kafka_test/kafka_produce.py"
 function PID_CHECK() {
         RUNNING_STAT=$(ps ax | grep $_EXEC_PATH | grep -v watchdog.sh | grep -v rotatelogs | grep -v grep | awk '{print $3}')
 
@@ -10,7 +12,7 @@ function PID_CHECK() {
                 echo "[$1] Process is running."
         else
                 echo "[$1] Process is stopped."
-                nohup python -u kafka_produce.py &
+                nohup python -u $_EXEC_DIR &
                 # Wait for running.
                 sleep 3
         fi
@@ -18,5 +20,5 @@ function PID_CHECK() {
 
 while true; do
         sleep 3
-        PID_CHECK "$_EXEC_PATH"
+        PID_CHECK "$_EXEC_PATH" "$_EXEC_DIR"
 done

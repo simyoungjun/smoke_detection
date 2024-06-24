@@ -51,4 +51,4 @@ def produce_camera_stream(server_ip, server_port, topic_name):
     producer.close()
 
 if __name__ == "__main__":
-    produce_camera_stream("piai_kafka.aiot.town", "9092", "TF-CAM-DOOR1")
+    produce_camera_stream("piai_kafka.aiot.town", "9092", "TF-CAM-DOOR2")

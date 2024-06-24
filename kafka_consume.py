@@ -8,7 +8,7 @@ def consume_camera_stream(server_ip, server_port, topic_name, group_id):
     consumer = KafkaConsumer(
         f"{topic_name}",
         bootstrap_servers=f"{server_ip}:{server_port}",
-        auto_offset_reset="earliest",
+        auto_offset_reset="latest",
         enable_auto_commit=True,
         group_id=f"{group_id}",
         api_version=(2, 6, 0)
@@ -21,8 +21,8 @@ def consume_camera_stream(server_ip, server_port, topic_name, group_id):
         frame = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
 
         if frame is not None:
-            # cv2.imshow('video', frame)
-            cv2.imwrite('png.png', frame)
+            cv2.imshow('video', frame)
+            #cv2.imwrite('png.png', frame)
 
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
@@ -124,5 +124,5 @@ def store_kafka_stream_as_video(server_ip, server_port, topic_name, group_id, o_
     
 
 if __name__=="__main__":
-    # consume_camera_stream("piai_kafka.aiot.town", "9092", "TF-CAM-DOOR2", "webcam-group2")
-    store_kafka_stream_as_video("piai_kafka.aiot.town", "9092", "TF-CAM-DOOR2", "webcam-group2", 640, 480, "latest", 60, 120, ".", "second_test.mp4", 1280, 1080)
+    consume_camera_stream("piai_kafka.aiot.town", "9092", "TF-CAM-DOOR2", "webcam-group_tmp3")
+    #store_kafka_stream_as_video("piai_kafka.aiot.town", "9092", "TF-CAM-DOOR2", "webcam-group2", 640, 480, "latest", 60, 120, ".", "second_test.mp4", 1280, 1080)
