@@ -124,5 +124,5 @@ def store_kafka_stream_as_video(server_ip, server_port, topic_name, group_id, o_
     
 
 if __name__=="__main__":
-    consume_camera_stream("piai_kafka.aiot.town", "9092", "TF-CAM-DOOR2", "webcam-group_tmp3")
+    consume_camera_stream("piai_kafka.aiot.town", "9092", "TF-CAM-TEST", "webcam-group_tmp1")
     #store_kafka_stream_as_video("piai_kafka.aiot.town", "9092", "TF-CAM-DOOR2", "webcam-group2", 640, 480, "latest", 60, 120, ".", "second_test.mp4", 1280, 1080)
