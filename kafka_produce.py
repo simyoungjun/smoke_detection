@@ -17,33 +17,34 @@ def get_last_offset(server_ip, server_port, topic_name):
             last_offset = max(last_offset, offset)
     consumer.close()
     return last_offset
-def produce_camera_stream(server_ip, server_port, topic_name):
-    producer = KafkaProducer(bootstrap_servers=f"{server_ip}:{server_port}")
-    prev = 0
-    last_offset = get_last_offset(server_ip, server_port, topic_name)
-    cap = cv2.VideoCapture(0)
-    cap.set(cv2.CAP_PROP_FPS, FPS)
-    print('width: {}, height : {}'.format(cap.get(3), cap.get(4)))
-    if not cap.isOpened():
-        print("Failed to open camera")
-        return
-    frame_count = 0
-    start_time = time.time()
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if True:
-            prev = time.time()
-            if prev - start_time >= 1:
-                print(f"fps: {frame_count}")
-                frame_count = 0
-                start_time = prev
-            ret, buffer = cv2.imencode(".jpg", frame)
-            frame_bytes = buffer.tobytes()
-            last_offset += 1
-            message_key = str(last_offset).encode('utf-8')
-            producer.send(topic_name, key=message_key, value=frame_bytes)
-            frame_count += 1
-    cap.release()
-    producer.close()
+def produce_camera_stream(server_ip, server_port, topic_name, threshold):
+    while True:
+        producer = KafkaProducer(bootstrap_servers=f"{server_ip}:{server_port}")
+        cap = cv2.VideoCapture(0)
+        if not cap.isOpened():
+            print("Failed to open camera")
+            return
+        cap.set(cv2.CAP_PROP_FPS, FPS)
+        cur_fps=cap.get(cv2.CAP_PROP_FPS)
+        print(f"cur_fps: {cur_fps}")
+        start_time=time.time()
+        start_offset=get_last_offset(server_ip, server_port, topic_name)
+        msg_num=0
+        while cap.isOpened():
+            ret, frame = cap.read()
+            if ret:
+                ret, buffer = cv2.imencode(".jpg", frame)
+                frame_bytes = buffer.tobytes()
+                msg_num += 1
+                message_key = str(start_offset+msg_num).encode('utf-8')
+                producer.send(topic_name, key=message_key, value=frame_bytes)
+            diff_msg_num=(time.time()-start_time)*cur_fps-msg_num
+            print(f"ideal msg_num - real msg_num: {diff_msg_num}")
+            if diff_msg_num > threshold:
+                cap.release()
+                producer.close()
+                print(f"restart the VideoCapture and KafkaProducer")
+                break
+
 if __name__ == "__main__":
-    produce_camera_stream("piai_kafka.aiot.town", "9092", "TF-CAM-TEST")
+    produce_camera_stream("piai_kafka.aiot.town", "9092", "TF-CAM-TEST", 150)
