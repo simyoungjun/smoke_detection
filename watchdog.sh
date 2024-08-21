@@ -2,8 +2,8 @@
 
 echo "test success" >> /home/wsms8646/rpi4_kafka_test/result.txt
 
-_EXEC_PATH="kafka_produce.py"
-_EXEC_DIR="/home/wsms8646/rpi4_kafka_test/kafka_produce.py"
+_EXEC_PATH="produce_video_wo_encode.py"
+_EXEC_DIR="/home/wsms8646/rpi4_kafka_test/produce_video_wo_encode.py"
 function PID_CHECK() {
         RUNNING_STAT=$(ps ax | grep $1 | grep -v watchdog.sh | grep -v rotatelogs | grep -v grep | awk '{print $3}')
 
