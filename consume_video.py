@@ -18,11 +18,12 @@ def get_last_offset(server_ip, server_port, topic_name):
 
 # Kafka consumer 설정
 consumer = KafkaConsumer(
-    'TF-CAM-TEST',
+    'TF-CAM-DOOR2',
     bootstrap_servers="piai_kafka.aiot.town:9092",
     auto_offset_reset='earliest',
     enable_auto_commit=True,
-    group_id=str(uuid.uuid4())
+    # group_id=str(uuid.uuid4())
+    group_id="test"
 )
 print(get_last_offset("piai_kafka.aiot.town", "9092", "TF-CAM-TEST"))
 
