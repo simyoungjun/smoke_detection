@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Set environment variables
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+export LD_LIBRARY_PATH=/usr/local/lib:/usr/lib
+
+# Delay to allow system initialization
+sleep 10
+
+# Start watchdog.sh in the background using nohup and log to watchdog.log
+nohup /home/aiot/rpi4_kafka_test/watchdog.sh > /home/aiot/rpi4_kafka_test/watchdog.log 2>&1 &
+
+# Exit with 0 to indicate successful execution
+exit 0
+
