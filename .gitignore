@@ -1,3 +1,8 @@
 .mp4
 mediamtx
 *.log
+.gitignore
+.lock
+.toml
+.local
+.log

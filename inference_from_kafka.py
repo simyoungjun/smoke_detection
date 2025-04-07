@@ -129,7 +129,7 @@ json_producer = KafkaProducer(
 )
 
 # Temperature based detection
-with open('/home/aiot/rpi4_kafka_test/gmm_params.pkl', 'rb') as file:
+with open('/home/aiot/rpi4_kafka_test/checkpoints/gmm_params.pkl', 'rb') as file:
     params = pickle.load(file)
 means = params['means']
 covariances = params['covariances']
@@ -156,7 +156,7 @@ def calculate_probability_density(X, means, covariances, weights, thresh=0.0007)
 #%
 
 
-model = YOLO('/home/aiot/rpi4_kafka_test/last.pt')
+model = YOLO('/home/aiot/rpi4_kafka_test/checkpoints/last.pt')
 
 # results = model(image_path)
 
