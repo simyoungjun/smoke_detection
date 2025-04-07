@@ -38,7 +38,6 @@ This project presents an on-device fire detection system designed for **industri
 | Temperature      | CT-1000N sensor logging every **1 second**                                |
 | Storage Format   | `.avi` video files and `.csv` sensor logs                                 |
 | Storage Schedule | Data saved in **10-minute segments**                                      |
-| Save Location    | External storage mounted under `/media`                                   |
 
 ---
 
