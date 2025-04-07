@@ -47,7 +47,7 @@ This project presents an on-device fire detection system designed for **industri
 ### 🔹 1. Smoke Detection with YOLOv8
 
 <p align="center">
-  <img src="images/smoke_detection_1.png" width="300"/>
+  <img src="images/smoke_detection_1.png" width="400"/>
 </p>
 
 Multiple bounding boxes for smoke with confidence scores.
@@ -57,7 +57,7 @@ Multiple bounding boxes for smoke with confidence scores.
 ### 🔹 2. On-Device Event Alert UI
 
 <p align="center">
-  <img src="images/fire_event_alert.png" width="300"/>
+  <img src="images/fire_event_alert.png" width="400"/>
 </p>
 
 - Shows detected **smoke**, **temperature**, **sensor ID**, **risk level**
