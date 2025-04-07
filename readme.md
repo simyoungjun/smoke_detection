@@ -65,16 +65,6 @@ Multiple bounding boxes for smoke with confidence scores.
 
 ---
 
-## 🌡️ Sample Temperature Data
-
-<p align="center">
-  <img src="images/temp_table_sample.png" width="400"/>
-</p>
-
-- Logs include `Timestamp`, `Object Temp`, and `Ambient Temp`  
-- Used for anomaly detection with GMM
-
----
 
 ## 🗂️ Project Structure
 
