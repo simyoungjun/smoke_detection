@@ -1,36 +1,36 @@
 
-# 🔥 On-Device Real-Time Fire Detection System for Industrial Dust Collectors
+# On-Device Real-Time Fire Detection System for Industrial Dust Collectors
 
 > Real-time monitoring and early fire detection in industrial dust collector systems using edge AI and sensor fusion.
 
 ---
 
-## 📖 Overview
+## Overview
 
 This project presents an on-device fire detection system designed for **industrial dust collectors** in a **metal spring manufacturing facility**. The system utilizes **RGB cameras**, **temperature sensors**, and **Jetson-based edge AI** to detect early signs of fire such as smoke and abnormal temperature rises.
 
 ---
 
-## ⚙️ Core Features
+## Core Features
 
-- 🔴 **Sensor Fusion Pipeline**
+- **Sensor Fusion Pipeline**
   - Real-time input from **RGB cameras** and **CT-1000N temperature sensors**
   - Data collected and streamed using **Kafka-Python**
 
-- 🔍 **Fire Detection AI Models**
+- **Fire Detection AI Models**
   - **YOLOv8** for object detection of smoke
   - **GMM (Gaussian Mixture Model)** for detecting temperature anomalies
   - **Soft voting** fusion strategy for final fire detection decision
 
-- 🚀 **Edge Deployment**
+- **Edge Deployment**
   - **Jetson Orin Nano** executes detection on-device
   - Fire alert is triggered locally with minimal latency
 
 ---
 
-## 🧪 Data Collection System
+##  Data Collection System
 
-### ✅ Method Overview
+### Method Overview
 
 | Source           | Description                                                                                 |
 |------------------|---------------------------------------------------------------------------------------------|
@@ -42,9 +42,9 @@ This project presents an on-device fire detection system designed for **industri
 
 ---
 
-## 📸 Visual Examples
+## Visual Examples
 
-### 🔹 1. Smoke Detection with YOLOv8
+### 1. Smoke Detection with YOLOv8
 
 <p align="center">
   <img src="images/smoke_detection_1.png" width="400"/>
@@ -54,7 +54,7 @@ Multiple bounding boxes for smoke with confidence scores.
 
 ---
 
-### 🔹 2. On-Device Event Alert UI
+### 2. On-Device Event Alert UI
 
 <p align="center">
   <img src="images/fire_event_alert.png" width="400"/>
