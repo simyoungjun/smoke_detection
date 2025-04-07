@@ -37,8 +37,7 @@ This project presents an on-device fire detection system designed for **industri
 | Camera           | RGB video recorded using Jetson Nano (resolution: **640×480**)                              |
 | Temperature      | CT-1000N sensor logging every **1 second**                                                  |
 | Storage Format   | `.avi` video files and `.csv` sensor logs                                                   |
-| Storage Schedule | Data saved in **10-minute segments**                                                        |
-| Data Streaming   | **Kafka-Python** is used to stream sensor data to an **external server**      |
+| Data Streaming   | **Kafka-Python** is used to stream sensor data to an **external server**                    |
 
 ---
 
