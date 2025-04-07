@@ -2,7 +2,7 @@
 mediamtx
 *.log
 .gitignore
-.lock
-.toml
-.local
-.log
+*.lock
+*.toml
+*.local
+*.log
